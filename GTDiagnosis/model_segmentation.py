@@ -78,7 +78,7 @@ def run_segmentation(self, index):
             new_image_path = os.path.join(os.path.dirname(image_path), new_file_name)
 
             if os.path.isfile(new_image_path):
-                print("存在历史结果")
+                print("history")
             else:
                 # 创建红色透明叠加层
                 overlay = Image.new("RGBA", original_image.size, (255, 0, 0, 0))

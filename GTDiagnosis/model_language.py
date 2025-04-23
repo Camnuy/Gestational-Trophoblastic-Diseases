@@ -105,8 +105,7 @@ import json
 
 
 
-GPT4V_ENDPOINT =   # 确保端点正确
-API_KEY = 
+
 
 def send_patient_data_to_gpt(current_patient_data, diagnosis_report, api_key):
     # 设置请求头
