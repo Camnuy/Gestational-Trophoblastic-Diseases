@@ -119,8 +119,8 @@ def initUI(self):
     self.top_bar_layout.addStretch()
 
     self.language_combo = QComboBox()
-    self.language_combo.addItem("中文")
     self.language_combo.addItem("English")
+    self.language_combo.addItem("中文")
     self.language_combo.currentIndexChanged.connect(self.change_language)
     self.top_bar_layout.addWidget(self.language_combo, alignment=Qt.AlignRight)
 
@@ -392,6 +392,7 @@ def initUI(self):
     self.current_image_index = 0
     self.current_image_path = None
     self.load_data()
+    self.change_language()
 
 def open_help_pdf(self):
     QDesktopServices.openUrl(QUrl.fromLocalFile("res/help.pdf"))

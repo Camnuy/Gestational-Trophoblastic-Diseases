@@ -13,7 +13,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True  # Enable loading of truncated images
 
 def load_data(self):
     if not os.path.exists(self.data_folder):
-        QMessageBox.critical(self, '错误', f'数据文件夹 "{self.data_folder}" 不存在。')
+        QMessageBox.critical(self, 'Fail', f'Data folder "{self.data_folder}" Not found')
         sys.exit()
 
     self.patients = []
@@ -40,7 +40,7 @@ def load_data(self):
 
                     self.patient_list.addTopLevelItem(patient_item)
             else:
-                print(f"未找到信息文件 {patient_folder}")
+                print(f"Not found {patient_folder}")
     
 
 def load_patient_data(self):
@@ -81,8 +81,8 @@ def load_patient_data(self):
             if self.image_folders:
                 self.current_image_index = 0
                 self.message_box = QMessageBox()
-                self.message_box.setWindowTitle('请稍候')
-                self.message_box.setText('正在加载图片...')
+                self.message_box.setWindowTitle('Please wait')
+                self.message_box.setText('Loading...')
                 self.message_box.setStandardButtons(QMessageBox.NoButton)  # 不显示任何按钮
                 self.message_box.setWindowModality(Qt.WindowModal)  # 设置为窗口模态
                 self.message_box.setWindowFlags(self.message_box.windowFlags() & ~Qt.WindowContextHelpButtonHint)
@@ -93,7 +93,7 @@ def load_patient_data(self):
             else:
                 self.graphics_view_top.scene.clear()
                 # QMessageBox.warning(self, '警告', f'未找到病理切片文件 {self.current_patient_data["name"]}')
-                print(f'未找到病理切片文件 {self.current_patient_data["name"]}')
+                print(f'Not found {self.current_patient_data["name"]}')
             self.display_image_lesion()
             # Expand the selected patient item
             selected_item.setExpanded(True)
@@ -110,7 +110,7 @@ def load_patient_data(self):
                 self.display_image_top(slice_image_relative_path)
             else:
                 # QMessageBox.warning(self, '警告', f'未找到病理切片文件 {slice_name}')
-                print(f'未找到病理切片文件 {slice_name}')
+                print(f'Not found {slice_name}')
 
 # 新增的 on_item_expanded 方法
 def on_item_expanded(self, item):
@@ -159,7 +159,7 @@ def display_image_top(self, image_file):
     else:
         self.graphics_view_top.scene.clear()
         self.image_item_top = None
-        print(f'未找到图像文件: {image_file}')
+        print(f'Not found: {image_file}')
 
 
 
@@ -179,7 +179,7 @@ def display_image_lesion(self):
         self.image1.mousePressEvent = lambda event: self.show_full_image(image_path1)
     else:
         # QMessageBox.warning(self, '警告', f'未找到病灶截图文件: {image_path1}')
-        print(f'未找到病灶截图文件: {image_path1}')
+        print(f'Not found: {image_path1}')
 
     # 加载第二张图像
     image_path2 = os.path.join(patient_folder, 'lesion_image_2.png')
@@ -191,11 +191,11 @@ def display_image_lesion(self):
         self.image2.mousePressEvent = lambda event: self.show_full_image(image_path2)
     else:
         # QMessageBox.warning(self, '警告', f'未找到病灶截图文件: {image_path2}')
-        print(f'未找到病灶截图文件: {image_path2}')
+        print(f'Not found: {image_path2}')
 
 def show_full_image(self, image_path):
     dialog = QDialog(self)
-    dialog.setWindowTitle("详细图像")
+    dialog.setWindowTitle("Image")
     dialog.setModal(True)
     dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)  # 去掉问号图标
     layout = QVBoxLayout(dialog)
@@ -237,7 +237,7 @@ def take_screenshot(self):
     screenshot.save(save_path)
     
     # 显示保存成功的提示框
-    QMessageBox.information(self, '截图保存成功', f'截图已保存为: {save_path}')
+    QMessageBox.information(self, 'Save', f'Save path: {save_path}')
 
     self.display_image_lesion()
 
@@ -271,7 +271,7 @@ def show_next_image(self):
 
 def show_context_menu(self, pos):
     context_menu = QMenu(self)
-    delete_action = QAction("删除", self)
+    delete_action = QAction("Delete", self)
     delete_action.triggered.connect(self.delete_patient)
     context_menu.addAction(delete_action)
     context_menu.exec_(self.patient_list.viewport().mapToGlobal(pos))
@@ -291,7 +291,7 @@ def initialize_right_panel(self):
     canvas_widget_layout = QVBoxLayout(canvas_widget_tab)
     canvas_widget_layout.addWidget(self.canvas_widget)
     canvas_widget_tab.setLayout(canvas_widget_layout)
-    self.tab_widget.addTab(canvas_widget_tab, "饼图")
+    self.tab_widget.addTab(canvas_widget_tab, "Pie Chart")
     
     # Lesion images tab
     lesion_images_tab = QWidget()
@@ -314,7 +314,7 @@ def initialize_right_panel(self):
     
     lesion_images_layout.addLayout(self.image_layout)
     lesion_images_tab.setLayout(lesion_images_layout)
-    self.tab_widget.addTab(lesion_images_tab, "病灶")
+    self.tab_widget.addTab(lesion_images_tab, "Lesion")
     
     # Detailed info tab
     self.detailed_info_text = QTextEdit()
@@ -322,4 +322,4 @@ def initialize_right_panel(self):
     detailed_info_layout = QVBoxLayout(detailed_info_tab)
     detailed_info_layout.addWidget(self.detailed_info_text)
     detailed_info_tab.setLayout(detailed_info_layout)
-    self.tab_widget.addTab(detailed_info_tab, "统计")
+    self.tab_widget.addTab(detailed_info_tab, "Statistics")

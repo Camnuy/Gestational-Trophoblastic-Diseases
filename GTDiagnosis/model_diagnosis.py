@@ -96,49 +96,20 @@ def calculate_metrics_with_count(self):
         "abnormal_villi_count_ratio": abnormal_villi_count_ratio
     }
 
-def classify_slide(self,metrics, villi_threshold1=0.001,villi_threshold2=0.05,edema_threshold1=0.1,edema_threshold2=0.3, hyperplasia_threshold1=0.1,hyperplasia_threshold2=0.3, abnormal_threshold=0.2):
-    #基本没有绒毛
-    print(metrics["villi_ratio"])
-    if metrics["villi_ratio"] < villi_threshold1:
-        return "视野内未见明显绒毛组织，请根据其他切片进行诊断"
-    #很少量绒毛
-    if villi_threshold1 <= metrics["villi_ratio"] < villi_threshold2:
-        if metrics["edema_ratio"] > edema_threshold1 and metrics["hyperplasia_ratio"] > hyperplasia_threshold1:
-            return "视野内见少量胎盘绒毛及蜕膜组织，绒毛存在水肿及部分增生，建议根据其他切片图像进行进一步分析"
-        elif metrics["edema_ratio"] >= edema_threshold1:
-            return"视野内见少量胎盘绒毛及蜕膜组织，绒毛存在部分水肿，建议根据其他切片图像进行进一步分析"
-        elif metrics["hyperplasia_ratio"] >= hyperplasia_threshold1:
-            return "视野内见少量胎盘绒毛及蜕膜组织，绒毛存在部分增生，建议根据其他切片图像进行进一步分析"
-        return "视野内见少量胎盘绒毛及蜕膜组织，无明显病灶，建议根据其他切片图像进行进一步分析"
-    #有一些绒毛
-    if metrics["villi_ratio"] >= villi_threshold2:
-        if metrics["edema_ratio"] > edema_threshold2 and metrics["hyperplasia_ratio"] > hyperplasia_threshold2:
-            return "视野内见胎盘绒毛及蜕膜组织，部分绒毛水肿明显，滋养层细胞可见增生，考虑葡萄胎，建议进行分子STR检测进一步明确诊断。"
-        elif metrics["edema_ratio"] > edema_threshold2 and metrics["hyperplasia_ratio"] > hyperplasia_threshold1:
-            return "视野内见胎盘绒毛及蜕膜组织，部分绒毛水肿明显，滋养层细胞局部增生，考虑葡萄胎，建议进行分子STR检测进一步明确诊断。"
-        elif metrics["edema_ratio"] > edema_threshold1 and metrics["hyperplasia_ratio"] > hyperplasia_threshold2:
-            return "视野内见胎盘绒毛及蜕膜组织，部分绒毛水肿，滋养层细胞局部增生，考虑葡萄胎，建议进行分子STR检测进一步明确诊断。"
-        
-        elif metrics["edema_ratio"] > edema_threshold1 and metrics["hyperplasia_ratio"] > hyperplasia_threshold1:
-            return"视野内见胎盘绒毛及蜕膜组织，绒毛存在轻度水肿，局灶滋养细胞增生，考虑为整体轻度异常，建议监测血HCG。"
-        elif metrics["edema_ratio"] > edema_threshold1:
-            return"视野内见胎盘绒毛及蜕膜组织，绒毛存在轻度水肿，考虑为整体轻度异常，建议监测血HCG。"
-        elif metrics["hyperplasia_ratio"] > hyperplasia_threshold1:
-            return"视野内见胎盘绒毛及蜕膜组织，局灶滋养细胞增生，考虑为整体轻度异常，建议监测血HCG。"
-        
-        return "胎盘绒毛及蜕膜组织及部分子宫内膜，绒毛形态基本正常，考虑为正常流产"
+def classify_slide(self,metrics, villi_threshold1=0.001,villi_threshold2=0.05,edema_threshold1=0.1,edema_threshold2=0.3, hyperplasia_threshold1=0.1,hyperplasia_threshold2=0.3, abnormal_threshold=0.2):     
+    return ""
 
 def generate_report(self, metrics, classification):
-    report = f"统计报告:\n\n"
-    report += f"绒毛组织面积占比: {metrics['villi_pixels']}pixels ({metrics['villi_ratio']*100:.2f}%)\n"
-    report += f"水肿组织面积占比: {metrics['edema_pixels']}pixels ({metrics['edema_ratio']*100:.2f}%)\n"
-    report += f"增生组织面积占比: {metrics['hyperplasia_pixels']}pixels ({metrics['hyperplasia_ratio']*100:.2f}%)\n"
-    report += f"绒毛组织个数: {metrics['villi_count']}\n"
-    report += f"水肿组织个数: {metrics['edema_count']} ({metrics['edema_count_ratio']*100:.2f}%)\n"
-    report += f"增生组织个数: {metrics['hyperplasia_count']} ({metrics['hyperplasia_count_ratio']*100:.2f}%)\n"
-    report += f"病理诊断:\n  {classification}"
+    report = f"Statistical Analysis Report:\n"
+    report += f"Villous tissue area percentage: {metrics['villi_pixels']}pixels ({metrics['villi_ratio']*100:.2f}%)\n"
+    report += f"Edematous tissue area percentage: {metrics['edema_pixels']}pixels ({metrics['edema_ratio']*100:.2f}%)\n"
+    report += f"Hyperplastic tissue area percentage: {metrics['hyperplasia_pixels']}pixels ({metrics['hyperplasia_ratio']*100:.2f}%)\n"
+    report += f"Number of villous tissues: {metrics['villi_count']}\n"
+    report += f"Number of edematous tissues: {metrics['edema_count']} ({metrics['edema_count_ratio']*100:.2f}%)\n"
+    report += f"Number of hyperplasia tissues: {metrics['hyperplasia_count']} ({metrics['hyperplasia_count_ratio']*100:.2f}%)\n"
+    report += f"Pathological diagnosis:\n  {classification}"
 
-    diagnosis_report = f"病理诊断:\n  {classification}"
+    diagnosis_report = f"{classification}"
 
     fig = self.plot_pie_charts(metrics)
     canvas = FigureCanvas(fig)
@@ -150,12 +121,12 @@ def generate_report(self, metrics, classification):
     return report, diagnosis_report
 
 def generate_pie_chart(self, metrics):
-    area_labels = ['正常绒毛', '水肿绒毛']
+    area_labels = ['normal_villi', 'edema_villi']
     villi_area = metrics['villi_pixels']
     edema_area = metrics['edema_pixels']
     normal_area = villi_area - edema_area
     areas = [max(normal_area, 0), max(edema_area,0)]
-    count_labels = ['正常绒毛', '水肿绒毛', '增生绒毛', '水肿增生']
+    count_labels = ['normal_villi', 'edema_villi', 'hyperplasia_villi', 'edema_hyperplasis_villi']
     villi_count = metrics['villi_count']
     edema_count = metrics['edema_count']
     hyperplasia_count = metrics['hyperplasia_count']
@@ -180,7 +151,7 @@ def plot_pie_charts(self ,metrics):
     colors = ['lightgreen', 'pink', 'gold', 'darkred']
     # Plot area pie chart
     wedges1, texts1, autotexts1 = ax1.pie(areas, autopct='%1.1f%%', startangle=90, colors=colors, textprops={'fontsize': 8}, wedgeprops={'width': 1, 'edgecolor': 'w'})
-    ax1.set_title('绒毛面积分布', fontproperties=font_properties_title, pad=0, y=0.93)
+    ax1.set_title('villi area distribution', fontproperties=font_properties_title, pad=0, y=0.93)
     ax1.legend(wedges1, area_labels, loc='upper center', bbox_to_anchor=(1, 0.5), prop=font_properties_legend)
     # 移除饼状图内的标签文字
     for text in texts1:
@@ -188,7 +159,7 @@ def plot_pie_charts(self ,metrics):
 
     # Plot count pie chart
     wedges2, texts2, autotexts2 = ax2.pie(counts, autopct='%1.1f%%', startangle=90, colors=colors, textprops={'fontsize': 8}, wedgeprops={'width': 0.5, 'edgecolor': 'w'})
-    ax2.set_title('绒毛个数分布', fontproperties=font_properties_title, pad=0, y=0.93)
+    ax2.set_title('Villous count distribution', fontproperties=font_properties_title, pad=0, y=0.93)
     ax2.legend(wedges2, count_labels, loc='upper center', bbox_to_anchor=(1, 0.5), prop=font_properties_legend)
     ax2.set_facecolor('#FFFFFF')
     for text in texts2:
@@ -227,5 +198,6 @@ def diagnosis(self):
     self.detailed_info_text.setText(report)
     
     # self.report_text.setText(f"deepseek辅助诊断:\n  {diagnosis_response_new}")
-    self.report_text.setText(f"病理诊断:\n  {diagnosis_report}")
+    self.report_text.setText(f"Pathological diagnosis:\n  {diagnosis_report}")
     self.pdf_text = diagnosis_report
+    print('''''''''''''''''')

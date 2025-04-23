@@ -197,7 +197,7 @@ def online_learn(self):
         if os.path.exists(image_path):
             # Create a new dialog to show the image
             dialog = QDialog(self)
-            dialog.setWindowTitle("显示图片")
+            dialog.setWindowTitle("picture")
             dialog.resize(800, 600)
             dialog_layout = QVBoxLayout(dialog)
 
@@ -217,14 +217,14 @@ def online_learn(self):
             self.add_overlay(graphics_scene, zengsheng_path, QColor(255, 0, 0, 100))  # Red overlay for Zengsheng
 
             # Add button to dialog layout
-            button = QPushButton("加入在线学习数据库")
+            button = QPushButton("get into online_learn dataset")
             button.clicked.connect(self.show_added_to_database_dialog)
 
             # Add tool selection buttons
             tool_layout = QHBoxLayout()
-            brush_button = QPushButton("画笔")
+            brush_button = QPushButton("brush")
             brush_button.clicked.connect(lambda: self.graphics_view.set_tool('brush'))
-            eraser_button = QPushButton("橡皮擦")
+            eraser_button = QPushButton("ereaser")
             eraser_button.clicked.connect(lambda: self.graphics_view.set_tool('eraser'))
             tool_layout.addWidget(brush_button)
             tool_layout.addWidget(eraser_button)
@@ -233,10 +233,10 @@ def online_learn(self):
             color_layout = QHBoxLayout()
             self.color_group = QButtonGroup()
             self.color_group.buttonClicked.connect(self.change_color)
-            red_radio = QRadioButton("绒毛 (红色)")
+            red_radio = QRadioButton("绒毛 (red)")
             red_radio.setChecked(True)
-            green_radio = QRadioButton("水肿 (绿色)")
-            blue_radio = QRadioButton("增生 (蓝色)")
+            green_radio = QRadioButton("水肿 (green)")
+            blue_radio = QRadioButton("增生 (blue)")
             self.color_group.addButton(red_radio, 1)
             self.color_group.addButton(green_radio, 2)
             self.color_group.addButton(blue_radio, 3)
@@ -254,9 +254,9 @@ def online_learn(self):
 def show_added_to_database_dialog(self):
     # Show a dialog indicating the image was added to the online learning database
     message_dialog = QDialog(self)
-    message_dialog.setWindowTitle("信息")
+    message_dialog.setWindowTitle("information")
     message_layout = QVBoxLayout(message_dialog)
-    message_label = QLabel("已加入在线学习数据库")
+    message_label = QLabel("Get into online_learn dataset")
     message_layout.addWidget(message_label)
     message_dialog.setLayout(message_layout)
     message_dialog.exec_()

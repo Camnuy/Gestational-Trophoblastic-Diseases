@@ -13,13 +13,14 @@ from PyQt5.QtGui import QPixmap, QPainter
 Image.MAX_IMAGE_PIXELS = None  # Disable the limit on image size
 ImageFile.LOAD_TRUNCATED_IMAGES = True  # Enable loading of truncated images
 
-from model_diagnosis import *
+
 from model_display import *
 from model_segmentation import *
 from model_update import *
 from model_video import *
 from model_online import *
 # from ui_initialization_ori import *
+from model_diagnosis import *
 from ui_initialization import *
 
 class PathologyApp(QMainWindow):
